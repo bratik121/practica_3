@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  DirectoryEmailEntity,
+  DirectoryEntity,
+} from 'src/directories/entities';
 
 @Module({
   imports: [
@@ -14,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         password: configService.get<string>('PG_DB_PASSWORD'),
         database: configService.get<string>('PG_DB_NAME'),
         schema: configService.get<string>('PG_DB_SCHEMA'),
+        entities: [DirectoryEntity, DirectoryEmailEntity],
         synchronize: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
