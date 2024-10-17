@@ -8,6 +8,9 @@ export class DirectoryRepository
   extends Repository<DirectoryEntity>
   implements IDirectoryRepository
 {
+  findAllDirectpries(): Promise<Result<DirectoryEntity[]>> {
+    throw new Error('Method not implemented.');
+  }
   async saveDirectory(
     directory: DirectoryEntity,
   ): Promise<Result<DirectoryEntity>> {
