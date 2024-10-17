@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DirectoryEmailEntity } from './directory-email.entity';
 
 @Entity('directory')
 export class DirectoryEntity {
@@ -15,6 +17,9 @@ export class DirectoryEntity {
 
   @Column()
   name: string;
+
+  @OneToMany(() => DirectoryEmailEntity, (email) => email.directory)
+  directoryEmails: DirectoryEmailEntity[];
 
   @CreateDateColumn({
     name: 'created_at',
