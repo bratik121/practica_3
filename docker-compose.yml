@@ -1,0 +1,13 @@
+services:
+  #!postgres:
+  postgres:
+    image: postgres
+    container_name: practica_3_postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=${PG_DB_NAME}
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PASSWORD}
+    ports:
+      - ${PG_DB_PORT}:5432
+    # volumes:
