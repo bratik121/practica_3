@@ -1,6 +1,6 @@
 export class CreateDirectoryResponse {
-  private constructor(
-    private readonly directoryId: string,
+  constructor(
+    private readonly directoryId: number,
     private readonly name: string,
     private readonly directoryEmails: string[],
   ) {}
