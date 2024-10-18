@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiFoundResponse,
   ApiNotFoundResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -60,4 +61,10 @@ export class DirectoiresController {
     }
     throw response.getError();
   }
+
+  @Get(':id')
+  @ApiFoundResponse({ description: 'Directory found' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
+  async getDirectoryById(@Param('id') id: string) {}
 }
