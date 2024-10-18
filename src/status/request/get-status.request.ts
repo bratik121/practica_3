@@ -1,1 +1,1 @@
-export class getStatusRequest {}
+export class GetStatusRequest {}

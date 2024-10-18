@@ -1,11 +1,12 @@
 import { IService } from 'src/common/aplication/services/iservice';
-import { getStatusRequest } from '../request';
-import { getStatusResponse } from '../responses';
+import { GetStatusRequest } from '../request';
+import { GetStatusResponse } from '../responses';
+import { Result } from 'src/common/result/result';
 
 export class GetStatusService
-  implements IService<getStatusRequest, getStatusResponse>
+  implements IService<GetStatusRequest, GetStatusResponse>
 {
-  async execute(request: getStatusRequest): Promise<getStatusResponse> {
-    return new getStatusResponse();
+  async execute(request: GetStatusRequest): Promise<Result<GetStatusResponse>> {
+    return Result.success(new GetStatusResponse());
   }
 }
