@@ -3,14 +3,16 @@ import { DirectoryEntity } from 'src/directories/entities';
 import { IDirectoryRepository } from './directory.repository.interface';
 import { Repository } from 'typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
 export class DirectoryRepository
   extends Repository<DirectoryEntity>
   implements IDirectoryRepository
 {
-  findAllDirectpries(): Promise<Result<DirectoryEntity[]>> {
-    throw new Error('Method not implemented.');
+  constructor(entity: EntityManager) {
+    super(DirectoryEntity, entity);
   }
+
   async saveDirectory(
     directory: DirectoryEntity,
   ): Promise<Result<DirectoryEntity>> {
@@ -34,11 +36,47 @@ export class DirectoryRepository
         where: { id },
         relations: ['directoryEmails'],
       });
+      if (!directory) {
+        return Result.fail<DirectoryEntity>(
+          new HttpException(
+            `Directory with id ${id} not found`,
+            HttpStatus.NOT_FOUND,
+          ),
+        );
+      }
       return Result.success(directory);
     } catch (error) {
       return Result.fail<DirectoryEntity>(
         new HttpException(
           `Directory with id ${id} not found`,
+          HttpStatus.NOT_FOUND,
+        ),
+      );
+    }
+  }
+
+  async findOneDirectoryByName(name: string): Promise<Result<DirectoryEntity>> {
+    try {
+      const directory = await this.findOne({
+        select: ['id', 'name'],
+        where: { name },
+        relations: ['directoryEmails'],
+      });
+
+      if (!directory) {
+        return Result.fail<DirectoryEntity>(
+          new HttpException(
+            `Directory with name ${name} not found`,
+            HttpStatus.NOT_FOUND,
+          ),
+        );
+      }
+
+      return Result.success(directory);
+    } catch (error) {
+      return Result.fail<DirectoryEntity>(
+        new HttpException(
+          `Directory with name ${name} not found`,
           HttpStatus.NOT_FOUND,
         ),
       );

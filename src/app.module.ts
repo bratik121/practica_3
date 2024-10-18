@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StatusController } from './status/status.controller';
 import { DbModule } from './config/db/db.module';
+import { DirectoiresController } from './directories/directories.controller';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { DbModule } from './config/db/db.module';
     }),
     DbModule,
   ],
-  controllers: [AppController, StatusController],
+  controllers: [AppController, StatusController, DirectoiresController],
   providers: [AppService],
 })
 export class AppModule {}

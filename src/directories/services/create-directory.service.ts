@@ -24,6 +24,18 @@ export class CreateDirectoryService
   async execute(
     request: CreateDirectoryRequest,
   ): Promise<Result<CreateDirectoryResponse>> {
+    const duplicateNameResult =
+      await this._directoryRepository.findOneDirectoryByName(request.name);
+
+    if (duplicateNameResult.isSuccess()) {
+      return Result.fail(
+        new HttpException(
+          `Directory with name ${request.name} already exists`,
+          HttpStatus.CONFLICT,
+        ),
+      );
+    }
+
     const emails = request.directoryEmails;
 
     for (const email of emails) {

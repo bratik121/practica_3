@@ -1,5 +1,5 @@
 import { DirectoryEmailEntity } from 'src/directories/entities';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { IDirectoryEmailRepository } from './directory-email.repository.interface';
 import { Result } from 'src/common/result/result';
 import { HttpException, HttpStatus } from '@nestjs/common';
@@ -7,6 +7,10 @@ export class DirectoryEmailRepository
   extends Repository<DirectoryEmailEntity>
   implements IDirectoryEmailRepository
 {
+  constructor(entityManager: EntityManager) {
+    super(DirectoryEmailEntity, entityManager);
+  }
+
   deleteDirectoryEmail(
     directoryEmail: DirectoryEmailEntity,
   ): Promise<Result<void>> {
@@ -37,6 +41,14 @@ export class DirectoryEmailRepository
           email: email,
         },
       });
+      if (!directoryEmailEntity) {
+        return Result.fail<DirectoryEmailEntity>(
+          new HttpException(
+            `directory email with email: ${email} not found`,
+            HttpStatus.NOT_FOUND,
+          ),
+        );
+      }
       return Result.success<DirectoryEmailEntity>(directoryEmailEntity);
     } catch (error) {
       return Result.fail<DirectoryEmailEntity>(
