@@ -12,12 +12,13 @@ import { IDirectoryEmailRepository } from './repositories/directory-email/direct
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { IService } from 'src/common/aplication/services/iservice';
-import { CreateDirectoryRequest } from './request';
-import { CreateDirectoryResponse } from './responses';
+import { CreateDirectoryRequest, FindOneDirectoryRequest } from './request';
+import { CreateDirectoryResponse, FindOneDirectoryResponse } from './responses';
 import { DirectoryRepository } from './repositories/directory/directory.repository';
 import { DirectoryEmailRepository } from './repositories/directory-email/directory-email.repository';
 import { CreateDirectoryService } from './services/create-directory.service';
 import { CreateDirectoryDto } from './dto';
+import { FindOneDirectoryService } from './services/find-one.directory.service';
 
 @Controller('directories')
 @ApiTags('Directories')
@@ -32,6 +33,11 @@ export class DirectoiresController {
     CreateDirectoryResponse
   >;
 
+  private findOneDirectoryService: IService<
+    FindOneDirectoryRequest,
+    FindOneDirectoryResponse
+  >;
+
   constructor(
     @InjectEntityManager() private readonly entityManager: EntityManager,
   ) {
@@ -43,6 +49,11 @@ export class DirectoiresController {
 
     //*Services
     this.createDirectoryService = new CreateDirectoryService(
+      this._directoryRepository,
+      this._directoryEmailRepository,
+    );
+
+    this.findOneDirectoryService = new FindOneDirectoryService(
       this._directoryRepository,
       this._directoryEmailRepository,
     );
@@ -66,5 +77,12 @@ export class DirectoiresController {
   @ApiFoundResponse({ description: 'Directory found' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiNotFoundResponse({ description: 'Not Found' })
-  async getDirectoryById(@Param('id') id: string) {}
+  async getDirectoryById(@Param('id') id: string) {
+    const request = new FindOneDirectoryRequest(parseInt(id));
+    const response = await this.findOneDirectoryService.execute(request);
+    if (response.isSuccess()) {
+      return response.getValue();
+    }
+    throw response.getError();
+  }
 }
