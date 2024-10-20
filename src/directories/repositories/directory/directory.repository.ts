@@ -103,10 +103,14 @@ export class DirectoryRepository
     }
   }
 
-  async findAllDirectories(): Promise<Result<DirectoryEntity[]>> {
+  async findAllDirectories(limit?:number,offset?:number): Promise<Result<DirectoryEntity[]>> {
+    console.log(offset);
+    console.log(limit);
     try {
       const directories = await this.find({
         select: ['id', 'name'],
+        skip: offset,  
+        take: limit,
         relations: ['directoryEmails'],
       });
       return Result.success(directories);
