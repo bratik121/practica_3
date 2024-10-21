@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete, Put} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -31,6 +31,7 @@ import { CreateDirectoryDto } from './dto';
 import { FindOneDirectoryService } from './services/find-one.directory.service';
 import { GetAllDirectoriesService } from './services/get-directories.service';
 import { DeleteDirectoryService } from './services/delete-directory.service'; // Añadido
+import { UpdateDirectoryService } from './services/update-directories'; //nuevo
 
 @Controller('directories')
 @ApiTags('Directories')
@@ -38,12 +39,14 @@ export class DirectoiresController {
   // Repositorios
   private readonly _directoryRepository: IDirectoryRepository;
   private readonly _directoryEmailRepository: IDirectoryEmailRepository;
+  //private readonly _directoriesService: IDDirectoriesService; //nuevo
 
   // Servicios
   private createDirectoryService: CreateDirectoryService;
   private findOneDirectoryService: FindOneDirectoryService;
   private getAllDirectoriesService: GetAllDirectoriesService;
   private deleteDirectoryService: DeleteDirectoryService; // Añadido
+  private updateDirectoryService: UpdateDirectoryService; //nuevo
 
   constructor(
     @InjectEntityManager() private readonly entityManager: EntityManager,
@@ -137,5 +140,10 @@ export class DirectoiresController {
       return response.getValue(); // Retornar la respuesta directamente
     }
     throw response.getError();
+  }
+  ///nuevo
+  @Put(':id')
+  updateDirectory(@Param('id') id: string, @Body() updateData: any) {
+    return this.updateDirectory(id, updateData);
   }
 }
