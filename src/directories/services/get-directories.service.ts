@@ -39,7 +39,7 @@ export class GetAllDirectoriesService
     // Verificar si el arreglo de directorios está vacío
     if (directories.length === 0) {
       return Result.fail(
-        new HttpException('No directories found', HttpStatus.NOT_FOUND),
+        new HttpException('Not enough records', HttpStatus.NOT_FOUND),
       );
     }
 
