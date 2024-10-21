@@ -16,13 +16,13 @@ import {
   CreateDirectoryRequest,
   DeleteDirectoryRequest,
   FindOneDirectoryRequest,
-  GetAllDirectoriesRequest
+  GetAllDirectoriesRequest,
 } from './request';
 import {
   CreateDirectoryResponse,
   DeleteDirectoryResponse,
   FindOneDirectoryResponse,
-  GetAllDirectoriesResponse
+  GetAllDirectoriesResponse,
 } from './responses';
 import { DirectoryRepository } from './repositories/directory/directory.repository';
 import { DirectoryEmailRepository } from './repositories/directory-email/directory-email.repository';
@@ -95,8 +95,8 @@ export class DirectoiresController {
   @ApiFoundResponse({ description: 'Directory found' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiNotFoundResponse({ description: 'Not Found' })
-  async getDirectoryById(@Param('id') id: number) {
-    const request = new FindOneDirectoryRequest(id);
+  async getDirectoryById(@Param('id') id: string) {
+    const request = new FindOneDirectoryRequest(parseInt(id));
     const response = await this.findOneDirectoryService.execute(request);
     if (response.isSuccess()) {
       return response.getValue();
@@ -108,11 +108,14 @@ export class DirectoiresController {
   @Get(':offset/:limit')
   @ApiFoundResponse({ description: 'All directories retrieved successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async getAllDirectories(@Param('offset') offset:number, @Param('limit') limit:number) {
-    console.log(offset);
-    console.log(limit);
-    console.log(isNaN(offset));
-    const request = new GetAllDirectoriesRequest(offset,limit); // Crear una solicitud vacía
+  async getAllDirectories(
+    @Param('offset') offset: string,
+    @Param('limit') limit: string,
+  ) {
+    const request = new GetAllDirectoriesRequest(
+      parseInt(offset),
+      parseInt(limit),
+    ); // Crear una solicitud vacía
     const response = await this.getAllDirectoriesService.execute(request);
     if (response.isSuccess()) {
       return response.getValue();
@@ -121,9 +124,9 @@ export class DirectoiresController {
   }
 
   @Delete(':id')
-  @ApiFoundResponse({ 
-    description: 'Directory deleted successfully', 
-    type: DeleteDirectoryResponse // Especifica el tipo de respuesta
+  @ApiFoundResponse({
+    description: 'Directory deleted successfully',
+    type: DeleteDirectoryResponse,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiNotFoundResponse({ description: 'Directory not found' })
@@ -135,6 +138,4 @@ export class DirectoiresController {
     }
     throw response.getError();
   }
-  
-
 }
