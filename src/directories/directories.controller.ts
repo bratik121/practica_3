@@ -197,10 +197,5 @@ export class DirectoiresController {
   partialUpdateDirectory(
     @Param('id') id: string,
     @Body() updateDirectoryRequest: UpdateDirectoryRequest,
-  ) {
-    return this.getAllDirectoriesService.partialUpdate(
-      id,
-      updateDirectoryRequest,
-    );
-  }
+  ) {}
 }
