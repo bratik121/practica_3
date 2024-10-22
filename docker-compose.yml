@@ -19,7 +19,10 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - practica_network
     command: npm run start:prod
+
   #!postgres:
   postgres:
     image: postgres
@@ -33,3 +36,10 @@ services:
       - ${PG_DB_PORT}:5432
     volumes:
       - ./volumen/postgres:/var/lib/postgresql/data
+    networks:
+      - practica_network
+
+# Definición de la red
+networks:
+  practica_network:
+    driver: bridge
