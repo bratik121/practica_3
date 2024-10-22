@@ -26,17 +26,19 @@ import {
   DeleteDirectoryRequest,
   FindOneDirectoryRequest,
   GetAllDirectoriesRequest,
+  PatchDirectoryRequest,
 } from './request';
 import {
   CreateDirectoryResponse,
   DeleteDirectoryResponse,
   FindOneDirectoryResponse,
   GetAllDirectoriesResponse,
+  PatchDirectoryResponse,
 } from './responses';
 import { DirectoryRepository } from './repositories/directory/directory.repository';
 import { DirectoryEmailRepository } from './repositories/directory-email/directory-email.repository';
 import { CreateDirectoryService } from './services/create-directory.service';
-import { CreateDirectoryDto } from './dto';
+import { CreateDirectoryDto, PatchDirectoryDto } from './dto';
 import { FindOneDirectoryService } from './services/find-one.directory.service';
 import { GetAllDirectoriesService } from './services/get-directories.service';
 import { DeleteDirectoryService } from './services/delete-directory.service'; // Añadido
@@ -45,6 +47,7 @@ import { IService } from 'src/common/aplication/services/iservice';
 import { UpdateDirectoryRequest } from './request/update-directories-requests';
 import { UpdateDirectoryResponse } from './responses/update-directories-responses';
 import { UpdateDirectoryDto } from './dto/update-directory.dto';
+import { PatchDirectoryService } from './services/patch-directory.service';
 
 @Controller('directories')
 @ApiTags('Directories')
@@ -76,6 +79,11 @@ export class DirectoiresController {
     UpdateDirectoryResponse
   >; //nuevo
 
+  private patchDirectoryService: IService<
+    PatchDirectoryRequest,
+    PatchDirectoryResponse
+  >;
+
   constructor(
     @InjectEntityManager() private readonly entityManager: EntityManager,
   ) {
@@ -106,6 +114,11 @@ export class DirectoiresController {
     ); // Añadido
 
     this.updateDirectoryService = new UpdateDirectoryService(
+      this._directoryRepository,
+      this._directoryEmailRepository,
+    );
+
+    this.patchDirectoryService = new PatchDirectoryService(
       this._directoryRepository,
       this._directoryEmailRepository,
     );
@@ -192,10 +205,23 @@ export class DirectoiresController {
     throw response.getError();
   }
 
-  ////nuevo
   @Patch(':id')
-  partialUpdateDirectory(
+  @ApiFoundResponse({ description: 'Directory partially updated' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiNotFoundResponse({ description: 'Directory not found' })
+  async partialUpdateDirectory(
     @Param('id') id: string,
-    @Body() updateDirectoryRequest: UpdateDirectoryRequest,
-  ) {}
+    @Body() body: PatchDirectoryDto,
+  ) {
+    const request = new PatchDirectoryRequest(
+      parseInt(id),
+      body.name,
+      body.emails,
+    );
+    const response = await this.patchDirectoryService.execute(request);
+    if (response.isSuccess()) {
+      return response.getValue();
+    }
+    throw response.getError();
+  }
 }
