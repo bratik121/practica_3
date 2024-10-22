@@ -101,15 +101,15 @@ npm run start:prod
 ```
 Arquitectura y herramientas utilizadas
 
-    NestJS: Un framework progresivo para aplicaciones backend en Node.js.
-    PostgreSQL: Base de datos relacional, en este caso ejecutada en su propio contenedor Docker.
-    Docker & Docker Compose: Para aislar y ejecutar la aplicación y la base de datos en contenedores.
-    TypeScript: Lenguaje usado para escribir el código, proporcionando una experiencia de desarrollo robusta y tipada.
+  - NestJS: Un framework progresivo para aplicaciones backend en Node.js.
+  - PostgreSQL: Base de datos relacional, en este caso ejecutada en su propio contenedor Docker.
+  - Docker & Docker Compose: Para aislar y ejecutar la aplicación y la base de datos en contenedores.
+  - TypeScript: Lenguaje usado para escribir el código, proporcionando una experiencia de desarrollo robusta y tipada.
 
 Enlaces útiles
 
-    Documentación oficial de NestJS: https://nestjs.com
-    Documentación oficial de Docker: https://www.docker.com/
-    Documentación oficial de PostgreSQL: https://www.postgresql.org/
+  - Documentación oficial de NestJS: https://nestjs.com
+  - Documentación oficial de Docker: https://www.docker.com/
+  - Documentación oficial de PostgreSQL: https://www.postgresql.org/
 
 
