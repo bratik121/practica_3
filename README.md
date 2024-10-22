@@ -2,72 +2,114 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Practica_3 - Computación en la Nube
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+[![NestJS](https://img.shields.io/badge/NestJS-8E8E93?logo=nestjs&logoColor=red)](https://nestjs.com/)
+[![Docker](https://img.shields.io/badge/Docker-blue?logo=docker&logoColor=white)](https://www.docker.com/)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 
-## Description
+## Descripción
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Este proyecto es una práctica de la asignatura **Computación en la Nube** que implementa un backend con el framework **NestJS**, utilizando **Docker** para la virtualización de la aplicación y la base de datos **PostgreSQL**. Está diseñado para ser fácilmente ejecutado en cualquier entorno local mediante **Docker Compose**.
 
-## Installation
+### Integrantes:
+- **Bryant**
+- **Oriana**
+- **Guillermo**
 
-```bash
-$ npm install
+## Características principales
+
+- **Framework**: NestJS (TypeScript)
+- **Base de datos**: PostgreSQL
+- **Containerización**: Docker y Docker Compose para facilitar la ejecución
+- **Configuración**: Variables de entorno gestionadas mediante un archivo `.env`
+
+---
+
+## Pre-requisitos
+
+### Clonar el repositorio:
+
+```
+git clone <URL_DEL_REPOSITORIO>
 ```
 
-## Running the app
+Crear el archivo .env
 
-```bash
-# development
-$ npm run start
+A continuación, copia y pega este contenido para crear tu archivo .env. Esto es importante, ya que el proyecto lo requiere para conectarse a la base de datos:
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+#App Port
+PORT=3000
 
-```bash
-# unit tests
-$ npm run test
+#enviroment
+NODE_ENV=development
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+#postgres
+PG_HOST=localhost
+PG_DB_NAME=postgres_practica_3
+PG_DB_USER=practica_3
+PG_DB_PASSWORD=my_scret_password
+PG_DB_PORT=26258
 ```
+Instalación de dependencias (opcional si no usas Docker):
+```
+npm install
+```
+¿Cómo ejecutar el proyecto?
 
-## Support
+Este proyecto se ejecuta principalmente con Docker y Docker Compose. Sigue estos pasos:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+    Ejecuta Docker Compose:
 
-## Stay in touch
+    Para construir y ejecutar los contenedores de la aplicación y la base de datos, usa el siguiente comando (con el flag -d si deseas ejecutarlo en segundo plano):
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+    bash
+```
+docker-compose up --build -d
+```
+Acceso a la aplicación:
 
-## License
+Una vez que los contenedores están corriendo, la aplicación estará disponible en:
 
-Nest is [MIT licensed](LICENSE).
+
+http://localhost:3800
+
+Si deseas verificar que todo está funcionando correctamente, puedes acceder al siguiente endpoint de estado:
+
+
+    http://localhost:3800/api/v1/status
+
+    Base de datos:
+        Base de datos: PostgreSQL
+        Host: localhost
+        Puerto: 26258
+        Usuario: practica_3
+        Contraseña: my_scret_password
+        Nombre de la base de datos: postgres_practica_3
+
+Comandos útiles
+Modo de desarrollo
+```
+npm run dev
+```
+Modo de producción
+```
+npm run start:prod
+```
+Arquitectura y herramientas utilizadas
+
+    NestJS: Un framework progresivo para aplicaciones backend en Node.js.
+    PostgreSQL: Base de datos relacional, en este caso ejecutada en su propio contenedor Docker.
+    Docker & Docker Compose: Para aislar y ejecutar la aplicación y la base de datos en contenedores.
+    TypeScript: Lenguaje usado para escribir el código, proporcionando una experiencia de desarrollo robusta y tipada.
+
+Enlaces útiles
+
+    Documentación oficial de NestJS: https://nestjs.com
+    Documentación oficial de Docker: https://www.docker.com/
+    Documentación oficial de PostgreSQL: https://www.postgresql.org/
+
+
