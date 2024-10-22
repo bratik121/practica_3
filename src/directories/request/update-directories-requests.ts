@@ -1,3 +1,7 @@
 export class UpdateDirectoryRequest {
-    constructor(public name: string, public directoryEmails: string[]) {}
-  }
+  constructor(
+    public readonly id: number,
+    public readonly name: string,
+    public readonly directoryEmails: string[],
+  ) {}
+}
