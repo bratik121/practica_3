@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Delete, Put} from '@nestjs/common';
+import { Body, Controller,Patch, Get, Param, Post, Delete, Put} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -32,6 +32,8 @@ import { FindOneDirectoryService } from './services/find-one.directory.service';
 import { GetAllDirectoriesService } from './services/get-directories.service';
 import { DeleteDirectoryService } from './services/delete-directory.service'; // Añadido
 import { UpdateDirectoryService } from './services/update-directories'; //nuevo
+import { UpdateDirectoryRequest } from './request/update-directories-requests'; //nuevo
+
 
 @Controller('directories')
 @ApiTags('Directories')
@@ -50,7 +52,7 @@ export class DirectoiresController {
 
   constructor(
     @InjectEntityManager() private readonly entityManager: EntityManager,
-  ) {
+  ){
     // Repositorios
     this._directoryRepository = new DirectoryRepository(this.entityManager);
     this._directoryEmailRepository = new DirectoryEmailRepository(
@@ -146,4 +148,10 @@ export class DirectoiresController {
   updateDirectory(@Param('id') id: string, @Body() updateData: any) {
     return this.updateDirectory(id, updateData);
   }
+
+  ////nuevo
+  @Patch(':id')
+  partialUpdateDirectory(@Param('id') id: string, @Body() updateDirectoryRequest: UpdateDirectoryRequest) {
+      return this.getAllDirectoriesService.partialUpdate(id, updateDirectoryRequest);
+    }
 }
