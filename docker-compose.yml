@@ -1,4 +1,25 @@
 services:
+  #!App
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: practica_3_nestjs
+    ports:
+      - 3800:3000
+    environment:
+      - PG_DB_NAME=${PG_DB_NAME}
+      - PG_DB_USER=${PG_DB_USER}
+      - PG_DB_PASSWORD=${PG_DB_PASSWORD}
+      - PG_DB_PORT=5432
+      - PG_HOST=postgres
+      - NODE_ENV=production
+    depends_on:
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:prod
   #!postgres:
   postgres:
     image: postgres

@@ -7,6 +7,8 @@ import {
   Post,
   Delete,
   Put,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -51,6 +53,7 @@ import { PatchDirectoryService } from './services/patch-directory.service';
 
 @Controller('directories')
 @ApiTags('Directories')
+@UsePipes(new ValidationPipe({ whitelist: true }))
 export class DirectoiresController {
   // Repositorios
   private readonly _directoryRepository: IDirectoryRepository;
