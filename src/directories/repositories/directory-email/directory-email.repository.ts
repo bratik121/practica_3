@@ -19,7 +19,7 @@ export class DirectoryEmailRepository
     try {
       // Verificar si el correo existe antes de intentar eliminarlo
       const emailToDelete = await this.findOne({
-        where: { id: directoryEmail.id },  // Usamos where para buscar por id
+        where: { email: directoryEmail.email }, // Usamos where para buscar por id
       });
       if (!emailToDelete) {
         return Result.fail(

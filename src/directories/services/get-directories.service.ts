@@ -48,8 +48,7 @@ export class GetAllDirectoriesService
       name: directory.name,
       emails: directory.directoryEmails.map((email) => email.email),
     }));
-    console.log(offset);
-    console.log(parseInt(offset + '') === 0);
+
     const nextpage = `http://localhost:3200/api/v1/directories/${
       offset + limit
     }/${limit}`;
