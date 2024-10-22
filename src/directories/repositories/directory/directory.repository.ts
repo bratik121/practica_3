@@ -17,9 +17,11 @@ export class DirectoryRepository
     directory: DirectoryEntity,
   ): Promise<Result<DirectoryEntity>> {
     try {
+      console.log(directory);
       const savedDirectory = await this.save(directory);
       return Result.success(savedDirectory);
     } catch (error) {
+      console.log(error);
       return Result.fail(
         new HttpException(
           `Error saving directory: ${error.message}`,

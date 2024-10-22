@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Delete, Put} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -31,7 +39,11 @@ import { CreateDirectoryDto } from './dto';
 import { FindOneDirectoryService } from './services/find-one.directory.service';
 import { GetAllDirectoriesService } from './services/get-directories.service';
 import { DeleteDirectoryService } from './services/delete-directory.service'; // Añadido
-import { UpdateDirectoryService } from './services/update-directories'; //nuevo
+import { UpdateDirectoryService } from './services/update-directories.service'; //nuevo
+import { IService } from 'src/common/aplication/services/iservice';
+import { UpdateDirectoryRequest } from './request/update-directories-requests';
+import { UpdateDirectoryResponse } from './responses/update-directories-responses';
+import { UpdateDirectoryDto } from './dto/update-directory.dto';
 
 @Controller('directories')
 @ApiTags('Directories')
@@ -42,11 +54,26 @@ export class DirectoiresController {
   //private readonly _directoriesService: IDDirectoriesService; //nuevo
 
   // Servicios
-  private createDirectoryService: CreateDirectoryService;
-  private findOneDirectoryService: FindOneDirectoryService;
-  private getAllDirectoriesService: GetAllDirectoriesService;
-  private deleteDirectoryService: DeleteDirectoryService; // Añadido
-  private updateDirectoryService: UpdateDirectoryService; //nuevo
+  private createDirectoryService: IService<
+    CreateDirectoryRequest,
+    CreateDirectoryResponse
+  >;
+  private findOneDirectoryService: IService<
+    FindOneDirectoryRequest,
+    FindOneDirectoryResponse
+  >;
+  private getAllDirectoriesService: IService<
+    GetAllDirectoriesRequest,
+    GetAllDirectoriesResponse
+  >;
+  private deleteDirectoryService: IService<
+    DeleteDirectoryRequest,
+    DeleteDirectoryResponse
+  >; // Añadido
+  private updateDirectoryService: IService<
+    UpdateDirectoryRequest,
+    UpdateDirectoryResponse
+  >; //nuevo
 
   constructor(
     @InjectEntityManager() private readonly entityManager: EntityManager,
@@ -76,6 +103,11 @@ export class DirectoiresController {
       this._directoryRepository,
       this._directoryEmailRepository,
     ); // Añadido
+
+    this.updateDirectoryService = new UpdateDirectoryService(
+      this._directoryRepository,
+      this._directoryEmailRepository,
+    );
   }
 
   // Crear un nuevo directorio
@@ -143,7 +175,19 @@ export class DirectoiresController {
   }
   ///nuevo
   @Put(':id')
-  updateDirectory(@Param('id') id: string, @Body() updateData: any) {
-    return this.updateDirectory(id, updateData);
+  async updateDirectory(
+    @Param('id') id: string,
+    @Body() updateData: UpdateDirectoryDto,
+  ) {
+    const request = new UpdateDirectoryRequest(
+      parseInt(id),
+      updateData.name,
+      updateData.emails,
+    );
+    const response = await this.updateDirectoryService.execute(request);
+    if (response.isSuccess()) {
+      return response.getValue();
+    }
+    throw response.getError();
   }
 }
