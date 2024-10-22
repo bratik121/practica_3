@@ -73,7 +73,6 @@ export class UpdateDirectoryService
       }
 
       for (const email of emailsToAdd) {
-        console.log('ids dir', directory.id);
         const emailResult = await this._directoryEmailRepository.saveEmail(
           directory.id,
           email,
@@ -84,17 +83,13 @@ export class UpdateDirectoryService
       }
     }
 
-    console.log('Llegue');
     delete directory.directoryEmails;
     const updatedDirectoryResult =
       await this._directoryRepository.saveDirectory(directory);
 
     if (updatedDirectoryResult.isFailure()) {
-      console.log('ASDASDa');
       return Result.fail(updatedDirectoryResult.getError());
     }
-
-    console.log('Llegue2');
 
     return Result.success(
       new UpdateDirectoryResponse(

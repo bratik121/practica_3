@@ -53,7 +53,6 @@ export class DirectoryEmailRepository
       const savedDirectoryEmail = await this.save(directoryEmail);
       return Result.success(savedDirectoryEmail);
     } catch (error) {
-      console.log('Aquii');
       return Result.fail<DirectoryEmailEntity>(
         new HttpException(
           `Fail saving the directory email: ${error.message}`,
