@@ -1,4 +1,6 @@
 services:
+
+
   #!App
   app:
     build:
@@ -16,12 +18,14 @@ services:
       - NODE_ENV=production
     depends_on:
       - postgres
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    #volumes:
+     # - .:/usr/src/app
+      #- /usr/src/app/node_modules
     networks:
       - practica_network
-    command: npm run start:prod
+    #command: npm run start:prod
+
+
 
   #!postgres:
   postgres:
@@ -35,11 +39,13 @@ services:
     ports:
       - ${PG_DB_PORT}:5432
     volumes:
-      - ./volumen/postgres:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     networks:
       - practica_network
 
-# Definición de la red
+
 networks:
   practica_network:
-    driver: bridge
+
+volumes:
+ pg_data:
